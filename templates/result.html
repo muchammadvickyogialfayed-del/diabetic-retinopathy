@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisis Diagnostik AI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+            color: #e2e8f0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 750px;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 40px;
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            background: linear-gradient(to right, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+        .visual-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        img {
+            max-width: 100%;
+            width: 280px;
+            height: auto;
+            border-radius: 12px;
+            border: 2px solid rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+        .file-name {
+            font-size: 13px;
+            color: #64748b;
+        }
+        .hasil-badge {
+            font-size: 18px;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .normal {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+        .dr {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+        .progress-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            height: 12px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+        .normal-bar {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .dr-bar {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+        .box {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .box h3 {
+            font-size: 14px;
+            color: #00f2fe;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .box p {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn-back {
+            display: inline-block;
+            text-decoration: none;
+            background: transparent;
+            color: #00f2fe;
+            border: 1px solid #00f2fe;
+            padding: 12px 35px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            background: rgba(0, 242, 254, 0.1);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Laporan Analisis Citra Fundus Retina</h1>
+
+    <div class="visual-block">
+        <img src="{{ gambar }}" alt="Retina Scan Image">
+        <div class="file-name">ID Berkas: {{ filename }}</div>
+        
+        <div class="hasil-badge {{ status }}">
+            {{ hasil }}
+        </div>
+
+        <div style="width: 100%; text-align: left; margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8;">
+                <span>Tingkat Kepastian Konfirmasi Model</span>
+                <strong>{{ persentase }}%</strong>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar {{ status }}-bar" style="width: {{ persentase }}%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>Interpretasi Hasil Klinis</h3>
+        <p>{{ penjelasan }}</p>
+    </div>
+
+    <div class="box">
+        <h3>Rekomendasi Medis Preventif</h3>
+        <p>{{ rekomendasi }}</p>
+    </div>
+
+    <div class="box">
+        <h3>Deklarasi & Batasan Hukum</h3>
+        <p>
+           Hasil analisis ini diproses secara otomatis oleh sistem AI berbasis jaringan saraf tiruan (CNN). Model AI ini memiliki tingkat akurasi validasi sebesar 94,92%, yang menunjukkan bahwa model memiliki kemampuan prediktif yang sangat tinggi dalam mengenali pola citra retina. Sementara itu, sisa nilai sebesar 5,08% merupakan margin of error (celah kesalahan) dari total keseluruhan data uji. Celah error inilah yang menjelaskan secara logis mengapa model terkadang masih mengalami misklasifikasi (seperti salah tebak False Negative atau False Positive) ketika dihadapkan pada variasi pencahayaan, kontras, atau penurunan kualitas piksel pada gambar. Oleh karena itu, aplikasi ini berfungsi sebagai alat bantu skrining awal saja dan tidak bisa dipakai mandiri untuk menggantikan diagnosis resmi dari Dokter Spesialis Mata.
+        </p>
+    </div>
+
+    <div class="btn-container">
+        <a href="/" class="btn-back">KEMBALI KE PANEL UTAMA</a>
+    </div>
+</div>
+
+</body>
+</html>
